@@ -4,14 +4,17 @@ import com.longdk.productstudycase.model.Product;
 import com.longdk.productstudycase.repository.ProductRepository;
 import com.longdk.productstudycase.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
     @Override
-    public Iterable<Product> findAll() {
-        return productRepository.findAll();
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     @Override
@@ -27,5 +30,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Product> findAllByCompanyContaining(Pageable pageable, String name) {
+        return productRepository.findAllByCompanyContaining(pageable,name);
     }
 }

@@ -5,12 +5,14 @@ import com.longdk.productstudycase.model.Product;
 import com.longdk.productstudycase.service.CategoryService;
 import com.longdk.productstudycase.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -26,9 +28,14 @@ public class ProductController {
     }
 
     @GetMapping("product-list")
-    public ModelAndView showListProductForm(){
+    public ModelAndView showListProductForm(@PageableDefault(size = 3) Pageable pageable, @RequestParam("name")Optional<String> name){
+        Page<Product> products;
+        if (name.isPresent()){
+            products = productService.findAllByCompanyContaining(pageable,name.get());
+        }else {
+            products = productService.findAll(pageable);
+        }
         ModelAndView modelAndView = new ModelAndView("product/list");
-        Iterable<Product> products = productService.findAll();
         modelAndView.addObject("products",products);
         return modelAndView;
     }

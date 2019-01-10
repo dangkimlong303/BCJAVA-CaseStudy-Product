@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>Title</title>
+</head>
+<body>
+<h1>Delete Product</h1>
+<h2>Are you sure?</h2>
+<p><a href="/product-list">Back to list</a></p>
+<form action="/product-delete" method="post" th:object="${product}">
+
+    <table border="1">
+        <input type="hidden" th:field="*{id}">
+        <tr>
+            <td>Code:</td>
+            <td th:text="${product.product_code}" th:field="*{product_code}"></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td th:text="${product.product_name}" th:field="*{product_name}"></td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td th:text="${product.price}" th:field="*{price}"></td>
+        </tr>
+        <tr>
+            <td>Company:</td>
+            <td th:text="${product.company}" th:field="*{company}"></td>
+        </tr>
+        <tr>
+            <td>Produced:</td>
+            <td th:text="${product.produced}" th:field="*{produced}"></td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td th:text="${product.description}" th:field="*{description}"></td>
+        </tr>
+        <tr>
+            <td>Discount:</td>
+            <td th:text="${product.discount}" th:field="*{discount}"></td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td th:text="${product.category.name}" th:field="*{category.name}"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Delete Product"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

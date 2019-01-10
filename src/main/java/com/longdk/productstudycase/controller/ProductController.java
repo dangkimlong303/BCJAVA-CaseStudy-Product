@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,5 +46,30 @@ public class ProductController {
         ModelAndView modelAndView = new ModelAndView("product/create");
         modelAndView.addObject("mess","Product create success!");
         return modelAndView;
+    }
+
+    @GetMapping("product-edit/{id}")
+    public ModelAndView showEditProductForm(@PathVariable Long id){
+        ModelAndView modelAndView = new ModelAndView("product/edit");
+        Product product = productService.findById(id);
+        modelAndView.addObject("product",product);
+        return modelAndView;
+    }
+    @PostMapping("product-edit")
+    public ModelAndView EditProduct(@ModelAttribute("product") Product product){
+        productService.save(product);
+        return new ModelAndView("product/edit","mess","Product edit success !!");
+    }
+    @GetMapping("product-delete/{id}")
+    public ModelAndView showDeleteProductForm(@PathVariable Long id){
+        ModelAndView modelAndView = new ModelAndView("product/delete");
+        Product product = productService.findById(id);
+        modelAndView.addObject("product",product);
+        return modelAndView;
+    }
+    @PostMapping("product-delete")
+    public String deleteProduct(@ModelAttribute("product")Product product){
+        productService.remove(product.getId());
+        return "redirect:product-list";
     }
 }
